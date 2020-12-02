@@ -9,7 +9,7 @@ class AirHockey():
     def __init__(self):
         # 画像データの読み込み
         self._field_img = cv2.imread("./img/field.png")
-        self._ball_img = cv2.imread("./img/boll.png")
+        self._ball_img = cv2.imread("./img/ball.png")
         self._left_img = cv2.imread("./img/left.png")
         self._right_img = cv2.imread("./img/right.png")
 
