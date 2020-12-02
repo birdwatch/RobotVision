@@ -75,38 +75,38 @@ class AirHockey():
     # 衝突判定
     def collision_detect(self):
         # 左プレイヤーとボールの衝突
-        if self._idx_ball_h > self._idx_left_h and self._idx_left_h - self._left_h > self._idx_ball_h + self._ball_h and self._idx_left_w + self._left_w > self._idx_ball_w - self._ball_h and self._idx_left_w - self._left_w < self._idx_ball_w + self._ball_h:
+        if self._ball_velocity_h >= 0 and self._idx_ball_h > self._idx_left_h and self._idx_left_h - self._left_h > self._idx_ball_h + self._ball_h and (self._idx_left_w + self._left_w > self._idx_ball_w - self._ball_h or self._idx_left_w - self._left_w < self._idx_ball_w + self._ball_h):
             self._idx_ball_h = self._idx_left_h - self._left_h - self._ball_h - 1
             self._ball_velocity_w = self._ball_velocity_w + self._left_velocity_w
             self._ball_velocity_h = -self._ball_velocity_h + self._left_velocity_h
-        if self._idx_ball_h < self._idx_left_h and self._idx_left_h + self._left_h < self._idx_ball_h - self._ball_h and self._idx_left_w + self._left_w > self._idx_ball_w - self._ball_h and self._idx_left_w - self._left_w < self._idx_ball_w + self._ball_h:
+        elif self._ball_velocity_h <= 0 and self._idx_ball_h < self._idx_left_h and self._idx_left_h + self._left_h < self._idx_ball_h - self._ball_h and (self._idx_left_w + self._left_w > self._idx_ball_w - self._ball_h or self._idx_left_w - self._left_w < self._idx_ball_w + self._ball_h):
             self._idx_ball_h = self._idx_left_h + self._left_h + self._ball_h + 1
             self._ball_velocity_w = self._ball_velocity_w + self._left_velocity_w
             self._ball_velocity_h = -self._ball_velocity_h + self._left_velocity_h
-        if self._idx_ball_w > self._idx_left_w and self._idx_left_w + self._left_w > self._idx_ball_w - self._ball_w and self._idx_left_h + self._left_h > self._idx_ball_h - self._ball_h and self._idx_left_h - self._left_h < self._idx_ball_h + self._ball_h:
+        elif self._ball_velocity_w <= 0 and self._idx_ball_w > self._idx_left_w and self._idx_left_w + self._left_w > self._idx_ball_w - self._ball_w and self._idx_left_h + self._left_h > self._idx_ball_h - self._ball_h and self._idx_left_h - self._left_h < self._idx_ball_h + self._ball_h:
             self._idx_ball_w = self._idx_left_w + self._left_w + self._ball_w + 1
             self._ball_velocity_w = -self._ball_velocity_w + self._left_velocity_w
-            self._ball_velocity_h = self._ball_velocity_h + self._right_velocity_h
-        if self._idx_ball_w < self._idx_left_w and self._idx_left_w - self._left_w < self._idx_ball_w + self._ball_w and self._idx_left_h + self._left_h > self._idx_ball_h - self._ball_h and self._idx_left_h - self._left_h < self._idx_ball_h + self._ball_h:
+            self._ball_velocity_h = self._ball_velocity_h + self._left_velocity_h
+        elif self._ball_velocity_w >= 0 and self._idx_ball_w < self._idx_left_w and self._idx_left_w - self._left_w < self._idx_ball_w + self._ball_w and self._idx_left_h + self._left_h > self._idx_ball_h - self._ball_h and self._idx_left_h - self._left_h < self._idx_ball_h + self._ball_h:
             self._idx_ball_w = self._idx_left_w - self._left_w - self._ball_w - 1
             self._ball_velocity_w = -self._ball_velocity_w + self._left_velocity_w
             self._ball_velocity_h = self._ball_velocity_h + self._left_velocity_h
 
         # 右プレイヤーとボールの衝突
-        if self._idx_ball_h > self._idx_right_h and self._idx_right_h - self._right_h > self._idx_ball_h + self._ball_h and self._idx_right_w + self._right_w > self._idx_ball_w - self._ball_w and self._idx_right_w - self._right_w < self._idx_ball_w + self._ball_h:
+        if self._ball_velocity_h >= 0 and self._idx_ball_h > self._idx_right_h and self._idx_right_h - self._right_h > self._idx_ball_h + self._ball_h and (self._idx_right_w + self._right_w < self._idx_ball_w - self._ball_w or self._idx_right_w - self._right_w < self._idx_ball_w + self._ball_h):
             self._idx_ball_h = self._idx_right_h - self._right_h - self._ball_h - 1
             self._ball_velocity_w = self._ball_velocity_w + self._right_velocity_w
             self._ball_velocity_h = -self._ball_velocity_h + self._right_velocity_h
-        if self._idx_ball_h < self._idx_right_h and self._idx_right_h + self._right_h < self._idx_ball_h - self._ball_h and self._idx_right_w + self._right_w > self._idx_ball_w - self._ball_h and self._idx_right_w - self._right_w < self._idx_ball_w + self._ball_h:
+        elif self._ball_velocity_h <= 0 and self._idx_ball_h < self._idx_right_h and self._idx_right_h + self._right_h < self._idx_ball_h - self._ball_h and (self._idx_right_w + self._right_w > self._idx_ball_w - self._ball_h or self._idx_right_w - self._right_w < self._idx_ball_w + self._ball_h):
             self._idx_ball_h = self._idx_right_h + self._right_h + self._ball_h + 1
             self._ball_velocity_w = self._ball_velocity_w + self._right_velocity_w
             self._ball_velocity_h = -self._ball_velocity_h + self._right_velocity_h
-        if self._idx_ball_w < self._idx_right_w and self._idx_right_w - self._right_w < self._idx_ball_w + self._ball_w and self._idx_right_h + self._right_h - 5 > self._idx_ball_h - self._ball_h and self._idx_right_h - self._right_h + 5 < self._idx_ball_h + self._ball_h:
+        elif self._ball_velocity_w >= 0 and self._idx_ball_w < self._idx_right_w and self._idx_right_w - self._right_w < self._idx_ball_w + self._ball_w and self._idx_right_h + self._right_h - 5 > self._idx_ball_h - self._ball_h and self._idx_right_h - self._right_h + 5 < self._idx_ball_h + self._ball_h:
             self._idx_ball_w = self._idx_right_w - self._right_w - self._ball_w - 1
             self._ball_velocity_w = -self._ball_velocity_w + self._right_velocity_w
             self._ball_velocity_h = self._ball_velocity_h + self._right_velocity_h
-        if self._idx_ball_w > self._idx_right_w and self._idx_right_w + self._right_w > self._idx_ball_w - self._ball_w and self._idx_right_h + self._right_h - 5 > self._idx_ball_h - self._ball_h and self._idx_right_h - self._right_h + 5 < self._idx_ball_h + self._ball_h:
-            self._idx_ball_w = self._idx_right_w - self._right_w - self._ball_w - 1
+        elif self._ball_velocity_w <= 0 and self._idx_ball_w > self._idx_right_w and self._idx_right_w + self._right_w > self._idx_ball_w - self._ball_w and self._idx_right_h + self._right_h - 5 > self._idx_ball_h - self._ball_h and self._idx_right_h - self._right_h + 5 < self._idx_ball_h + self._ball_h:
+            self._idx_ball_w = self._idx_right_w + self._right_w + self._ball_w + 1
             self._ball_velocity_w = -self._ball_velocity_w + self._right_velocity_w
             self._ball_velocity_h = self._ball_velocity_h + self._right_velocity_h
 
