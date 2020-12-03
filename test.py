@@ -7,6 +7,9 @@ boot = True
 
 class AirHockey():
     _ball_velocity_h = _ball_velocity_w = _left_velocity_h = _left_velocity_w = _right_velocity_h = _right_velocity_w = 0
+    # 1 → left(blue)、2 → right(red)
+    _ball_color = 0
+    _previous_field = 0
 
     def __init__(self):
         # 画像データの読み込み
@@ -30,6 +33,7 @@ class AirHockey():
 
         # 毎フレーム表示する画像
         self._frame = copy.deepcopy(self._field_img)
+        self._previous_field = copy.deepcopy(self._field_img)
 
     # 入力
     def input(self):
@@ -76,6 +80,7 @@ class AirHockey():
     def collision_detect(self):
         # 左プレイヤーとボールの衝突
         if abs(self._idx_left_h - self._idx_ball_h) < self._left_h + self._ball_h and abs(self._idx_left_w - self._idx_ball_w) < self._left_w + self._ball_w:
+            self._ball_color = 1
             if self._ball_velocity_h >= 0 and self._idx_ball_h < self._idx_left_h:
                 self._idx_ball_h = self._idx_left_h - self._left_h - self._ball_h - 1
                 self._ball_velocity_w = self._ball_velocity_w + self._left_velocity_w
@@ -95,6 +100,7 @@ class AirHockey():
 
         # 右プレイヤーとボールの衝突
         if abs(self._idx_right_h - self._idx_ball_h) < self._right_h + self._ball_h and abs(self._idx_right_w - self._idx_ball_w) < self._right_w + self._ball_w:
+            self._ball_color = 2
             if self._ball_velocity_h >= 0 and self._idx_ball_h < self._idx_right_h:
                 self._idx_ball_h = self._idx_right_h - self._right_h - self._ball_h - 1
                 self._ball_velocity_w = self._ball_velocity_w + self._right_velocity_w
@@ -141,6 +147,14 @@ class AirHockey():
     def img_generate(self):
         # self._ball_velocity_h = int(self._ball_velocity_w * 1.1)
         # self._ball_velocity_w = int(self._ball_velocity_w * 0.9)
+        if self._ball_color != 0:
+            if self._ball_color == 1:
+                cv2.circle(self._previous_field, (self._idx_ball_w,
+                                                  self._idx_ball_h), 70, (255, 0, 0), -1)
+            elif self._ball_color == 2:
+                cv2.circle(self._previous_field, (self._idx_ball_w,
+                                                  self._idx_ball_h), 70, (0, 0, 255), -1)
+        self._frame = copy.deepcopy(self._previous_field)
         self._frame[
             (self._idx_ball_h - self._ball_h - 1): (self._idx_ball_h + self._ball_h), (self._idx_ball_w - self._ball_w): (self._idx_ball_w + self._ball_w)
         ] = self._ball_img
@@ -154,7 +168,6 @@ class AirHockey():
     # 表示
     def show(self):
         cv2.imshow("game", self._frame)
-        self._frame = copy.deepcopy(self._field_img)
 
 
 game = AirHockey()
@@ -166,3 +179,5 @@ while True:
     game.show()
     if not boot:
         break
+
+cv2.waitKey(0)
