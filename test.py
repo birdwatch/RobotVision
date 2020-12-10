@@ -49,7 +49,7 @@ class AirHockey():
         key = cv2.waitKey(1)
         if key == ord("q"):
             self._boot = False
-        ''' elif key == ord("w"):
+        elif key == ord("w"):
             self._idx_right_h -= 10
             self._right_velocity_h = -5
         elif key == ord("s"):
@@ -60,7 +60,7 @@ class AirHockey():
             self._right_velocity_w = -5
         elif key == ord("d"):
             self._idx_right_w += 10
-            self._right_velocity_w = 5 '''
+            self._right_velocity_w = 5
 
     def set_left(self, x, y):
         self._left_velocity_w = self._idx_left_w - 2*x
@@ -102,42 +102,76 @@ class AirHockey():
         # 左プレイヤーとボールの衝突
         if abs(self._idx_left_h - self._idx_ball_h) < self._left_h + self._ball_h and abs(self._idx_left_w - self._idx_ball_w) < self._left_w + self._ball_w:
             self._ball_color = 1
-            if self._ball_velocity_h >= 0 and self._idx_ball_h < self._idx_left_h:
+            # ボールが上
+            if self._ball_velocity_h >= 0 and self._idx_ball_h < self._idx_left_h and abs(self._idx_right_w - self._idx_ball_w) < self._left_w:
                 self._idx_ball_h = self._idx_left_h - self._left_h - self._ball_h - 1
                 self._ball_velocity_w = self._ball_velocity_w + self._left_velocity_w
                 self._ball_velocity_h = -self._ball_velocity_h + self._left_velocity_h
-            elif self._ball_velocity_h <= 0 and self._idx_ball_h > self._idx_left_h:
+                if self._idx_ball_h - self._ball_h < 1:
+                    self._idx_left_h = self._ball_img.shape[0] + self._left_h
+                    self._idx_ball_h = self._ball_h + 1
+                    self._ball_velocity_h = 0
+            # ボールが下
+            elif self._ball_velocity_h <= 0 and self._idx_ball_h > self._idx_left_h and abs(self._idx_right_w - self._idx_ball_w) < self._left_w:
                 self._idx_ball_h = self._idx_left_h + self._left_h + self._ball_h + 1
                 self._ball_velocity_w = self._ball_velocity_w + self._left_velocity_w
                 self._ball_velocity_h = -self._ball_velocity_h + self._left_velocity_h
-            elif self._ball_velocity_w <= 0 and self._idx_ball_w > self._idx_left_w:
+                if self._idx_ball_h + self._ball_h > self._field_img.shape[0]:
+                    self._idx_left_h = self._field_img.shape[0] - \
+                        self._ball_img.shape[0] - self._left_h - 2
+                    self._idx_ball_h = self._field_img.shape[0] - \
+                        self._ball_h
+                    self._ball_velocity_h = 0
+            elif self._ball_velocity_w <= 0 and self._idx_ball_w > self._idx_left_w:  # ボールが右
                 self._idx_ball_w = self._idx_left_w + self._left_w + self._ball_w + 1
                 self._ball_velocity_w = -self._ball_velocity_w + self._left_velocity_w
                 self._ball_velocity_h = self._ball_velocity_h + self._left_velocity_h
-            elif self._ball_velocity_w >= 0 and self._idx_ball_w < self._idx_left_w:
+            elif self._ball_velocity_w >= 0 and self._idx_ball_w < self._idx_left_w:  # ボールが左
                 self._idx_ball_w = self._idx_left_w - self._left_w - self._ball_w - 1
                 self._ball_velocity_w = -self._ball_velocity_w + self._left_velocity_w
                 self._ball_velocity_h = self._ball_velocity_h + self._left_velocity_h
+                if self._idx_ball_w - self._ball_w < 1:
+                    self._idx_left_w = self._ball_img.shape[1] + self._left_w
+                    self._idx_ball_w = self._ball_h + 1
+                    self._ball_velocity_w = 0
 
         # 右プレイヤーとボールの衝突
         if abs(self._idx_right_h - self._idx_ball_h) < self._right_h + self._ball_h and abs(self._idx_right_w - self._idx_ball_w) < self._right_w + self._ball_w:
             self._ball_color = 2
-            if self._ball_velocity_h >= 0 and self._idx_ball_h < self._idx_right_h:
+            # ボールが上
+            if self._ball_velocity_h >= 0 and self._idx_ball_h < self._idx_right_h and abs(self._idx_right_w - self._idx_ball_w) < self._right_w + 5:
                 self._idx_ball_h = self._idx_right_h - self._right_h - self._ball_h - 1
                 self._ball_velocity_w = self._ball_velocity_w + self._right_velocity_w
                 self._ball_velocity_h = -self._ball_velocity_h + self._right_velocity_h
-            elif self._ball_velocity_h <= 0 and self._idx_ball_h > self._idx_right_h:
+                if self._idx_ball_h - self._ball_h < 5 and not self._ball_velocity_h == 0:
+                    self._idx_right_h = self._ball_img.shape[0] + \
+                        self._right_h + 1
+                    self._idx_ball_h = self._ball_h + 1
+                    self._ball_velocity_h = 0
+            # ボールが下
+            elif self._ball_velocity_h <= 0 and self._idx_ball_h > self._idx_right_h and abs(self._idx_right_w - self._idx_ball_w) < self._right_w + 5:
                 self._idx_ball_h = self._idx_right_h + self._right_h + self._ball_h + 1
                 self._ball_velocity_w = self._ball_velocity_w + self._right_velocity_w
                 self._ball_velocity_h = -self._ball_velocity_h + self._right_velocity_h
-            elif self._ball_velocity_w >= 0 and self._idx_ball_w < self._idx_right_w:
+                if self._idx_ball_h + self._ball_h > self._field_img.shape[0]:
+                    self._idx_right_h = self._field_img.shape[0] - \
+                        self._ball_img.shape[0] - self._right_h - 2
+                    self._idx_ball_h = self._field_img.shape[0] - self._ball_h
+                    self._ball_velocity_h = 0
+            elif self._ball_velocity_w >= 0 and self._idx_ball_w < self._idx_right_w:  # ボールが左
                 self._idx_ball_w = self._idx_right_w - self._right_w - self._ball_w - 1
                 self._ball_velocity_w = -self._ball_velocity_w + self._right_velocity_w
                 self._ball_velocity_h = self._ball_velocity_h + self._right_velocity_h
-            elif self._ball_velocity_w <= 0 and self._idx_ball_w > self._idx_right_w:
+            elif self._ball_velocity_w <= 0 and self._idx_ball_w > self._idx_right_w:  # ボールが右
                 self._idx_ball_w = self._idx_right_w + self._right_w + self._ball_w + 1
                 self._ball_velocity_w = -self._ball_velocity_w + self._right_velocity_w
                 self._ball_velocity_h = self._ball_velocity_h + self._right_velocity_h
+                if self._idx_ball_w + self._ball_w > self._field_img.shape[1]:
+                    self._idx_right_w = self._field_img.shape[1] - \
+                        self._ball_img.shape[1] - self._right_w - 2
+                    self._idx_ball_w = self._field_img.shape[1] - \
+                        self._ball_w - 2
+                    self._ball_velocity_w = 0
 
         self._idx_ball_h += self._ball_velocity_h
         self._idx_ball_w += self._ball_velocity_w
@@ -166,8 +200,8 @@ class AirHockey():
 
     # 毎フレームの画像の生成
     def img_generate(self):
-        self._ball_velocity_h = int(self._ball_velocity_w * 0.97)
-        self._ball_velocity_w = int(self._ball_velocity_w * 0.97)
+        #self._ball_velocity_h = int(self._ball_velocity_w * 0.97)
+        #self._ball_velocity_w = int(self._ball_velocity_w * 0.99)
         if self._ball_color != 0:
             if self._ball_color == 1:
                 cv2.circle(self._previous_field, (self._idx_ball_w,
@@ -217,7 +251,7 @@ class AirHockey():
         cv2.imshow("game", self._previous_field)
 
 
-''' game = AirHockey()
+game = AirHockey()
 while True:
     game.input()
     game.element_revise()
@@ -228,4 +262,4 @@ while True:
         break
 
 game.result_show()
-cv2.waitKey(0) '''
+cv2.waitKey(0)
