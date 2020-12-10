@@ -1,8 +1,7 @@
 import cv2
 import copy
 import numpy as np
-
-boot = True
+import sys
 
 
 class AirHockey():
@@ -29,9 +28,9 @@ class AirHockey():
         self._idx_ball_h, self._idx_ball_w = self._field_img.shape[
             0] // 2, self._field_img.shape[1] // 2
         self._idx_left_h, self._idx_left_w = self._field_img.shape[
-            0] // 2, self._field_img.shape[1] // 2 - 700
+            0] // 2, self._field_img.shape[1] // 2 - 500
         self._idx_right_h, self._idx_right_w = self._field_img.shape[
-            0] // 2, self._field_img.shape[1] // 2 + 700
+            0] // 2, self._field_img.shape[1] // 2 + 500
 
         # 毎フレーム表示する画像
         self._frame = copy.deepcopy(self._field_img)
@@ -63,12 +62,18 @@ class AirHockey():
             self._right_velocity_w = 5
 
     def set_left_velocity(self, x, y):
-        self._left_velocity_h = x
-        self._left_velocity_w = y
+        self._left_velocity_w = int(x * 1.7)
+        self._left_velocity_h = int(y * 1.7)
+        self._idx_left_h = self._idx_left_h + self._left_velocity_h
+        self._idx_left_w = self._idx_left_w + self._left_velocity_w
+        self.element_revise()
 
     def set_right_velocity(self, x, y):
-        self._right_velocity_w = x
-        self._right_velocity_h = y
+        self._right_velocity_w = int(x * 1.7)
+        self._right_velocity_h = int(y * 1.7)
+        self._idx_right_w = self._idx_right_w + self._right_velocity_w
+        self._idx_right_h = self._idx_right_h + self._right_velocity_h
+        self.element_revise()
 
     # 各プレーヤーの位置調整
     def element_revise(self):
@@ -181,13 +186,13 @@ class AirHockey():
             self._idx_ball_h = self._field_img.shape[0] - self._ball_h
             self._ball_velocity_h = -self._ball_velocity_h
         if self._idx_ball_w - self._ball_w < 1:
-            if self._idx_ball_h < 600 and self._idx_ball_h > 400:
+            if self._idx_ball_h < self._field_img.shape[0] // 2 + 100 and self._idx_ball_h > self._field_img.shape[0] // 2 - 100:
                 print("game end")
                 self._boot = False
             self._idx_ball_w = self._ball_w
             self._ball_velocity_w = -self._ball_velocity_w
         if self._idx_ball_w + self._ball_w > self._field_img.shape[1]:
-            if self._idx_ball_h < 600 and self._idx_ball_h > 400:
+            if self._idx_ball_h < self._field_img.shape[0] // 2 + 100 and self._idx_ball_h > self._field_img.shape[0] // 2 - 100:
                 print("game end")
                 self._boot = False
             self._idx_ball_w = self._field_img.shape[1] - self._ball_w
@@ -195,8 +200,8 @@ class AirHockey():
 
     # 毎フレームの画像の生成
     def img_generate(self):
-        #self._ball_velocity_h = int(self._ball_velocity_w * 0.97)
-        #self._ball_velocity_w = int(self._ball_velocity_w * 0.99)
+        self._ball_velocity_h = int(self._ball_velocity_h * 0.97)
+        self._ball_velocity_w = int(self._ball_velocity_w * 0.97)
         if self._ball_color != 0:
             if self._ball_color == 1:
                 cv2.circle(self._previous_field, (self._idx_ball_w,
@@ -246,6 +251,8 @@ class AirHockey():
         cv2.imshow("game", self._previous_field)
 
 
+''' 
+##
 game = AirHockey()
 while True:
     game.input()
@@ -253,8 +260,9 @@ while True:
     game.collision_detect()
     game.img_generate()
     game.show()
-    if not boot:
+    if not game._boot:
         break
 
 game.result_show()
 cv2.waitKey(0)
+ '''
