@@ -86,6 +86,7 @@ while True:
     ##cv2.imshow("camera_L", frame_L)
     #cv2.imshow("camera_R", frame_R)
 time.sleep(5)
+game.draw_winner_circle()
 game.result_show()
 cv2.waitKey(0)
 cap_L.release()
