@@ -50,27 +50,27 @@ class AirHockey():
             self._boot = False
         elif key == ord("w"):
             self._idx_right_h -= 10
-            self._right_velocity_h = -5
+            self._right_velocity_h = -100
         elif key == ord("s"):
             self._idx_right_h += 10
-            self._right_velocity_h = 5
+            self._right_velocity_h = 100
         elif key == ord("a"):
             self._idx_right_w -= 10
-            self._right_velocity_w = -5
+            self._right_velocity_w = -100
         elif key == ord("d"):
             self._idx_right_w += 10
-            self._right_velocity_w = 5
+            self._right_velocity_w = 100
 
     def set_left_velocity(self, x, y):
-        self._left_velocity_w = int(x * 1.7)
-        self._left_velocity_h = int(y * 1.7)
+        self._left_velocity_w = int(x * 2.3)
+        self._left_velocity_h = int(y * 2.3)
         self._idx_left_h = self._idx_left_h + self._left_velocity_h
         self._idx_left_w = self._idx_left_w + self._left_velocity_w
         self.element_revise()
 
     def set_right_velocity(self, x, y):
-        self._right_velocity_w = int(x * 1.7)
-        self._right_velocity_h = int(y * 1.7)
+        self._right_velocity_w = int(x * 2.3)
+        self._right_velocity_h = int(y * 2.3)
         self._idx_right_w = self._idx_right_w + self._right_velocity_w
         self._idx_right_h = self._idx_right_h + self._right_velocity_h
         self.element_revise()
@@ -78,12 +78,12 @@ class AirHockey():
     # 各プレーヤーの位置調整
     def element_revise(self):
         # 左側のプレーヤー
-        if self._idx_left_h - self._left_h < 0:
-            self._idx_left_h = self._left_h
+        if self._idx_left_h - self._left_h < 5:
+            self._idx_left_h = self._left_h+7
         if self._idx_left_h + self._left_h > self._field_img.shape[0]:
-            self._idx_left_h = self._field_img.shape[0] - self._left_h
-        if self._idx_left_w - self._left_w < 0:
-            self._idx_left_w = self._left_w
+            self._idx_left_h = self._field_img.shape[0] - self._left_h - 2
+        if self._idx_left_w - self._left_w < 5:
+            self._idx_left_w = self._left_w + 15
         if self._idx_left_w + self._left_w > self._field_img.shape[1] // 2:
             self._idx_left_w = self._field_img.shape[1] // 2 - self._left_w
         # 右側のプレーヤー
@@ -93,8 +93,8 @@ class AirHockey():
             self._idx_right_h = self._field_img.shape[0] - self._right_h
         if self._idx_right_w - self._right_w < self._field_img.shape[1] // 2:
             self._idx_right_w = self._right_w + self._field_img.shape[1] // 2
-        if self._idx_right_w + self._right_w > self._field_img.shape[1]:
-            self._idx_right_w = self._field_img.shape[1] - self._right_w
+        if self._idx_right_w + self._right_w > self._field_img.shape[1] - 5:
+            self._idx_right_w = self._field_img.shape[1] - self._right_w + 15
 
     # 衝突判定
     def collision_detect(self):
@@ -173,6 +173,15 @@ class AirHockey():
                         self._ball_w - 2
                     self._ball_velocity_w = 0
 
+        if self._ball_velocity_h > 40:
+            self._ball_velocity_h = 40
+        if self._ball_velocity_h < -40:
+            self._ball_velocity_h = -40
+        if self._ball_velocity_w > 40:
+            self._ball_velocity_w = 40
+        if self._ball_velocity_w < -40:
+            self._ball_velocity_w = -40
+
         self._idx_ball_h += self._ball_velocity_h
         self._idx_ball_w += self._ball_velocity_w
 
@@ -250,9 +259,18 @@ class AirHockey():
         )
         cv2.imshow("game", self._previous_field)
 
+    def draw_winner_circle(self):
+        for i in range(70, 200):
+            if self._idx_ball_w < 100:
+                cv2.circle(self._previous_field, (self._idx_ball_w,
+                                                  self._idx_ball_h), i, (255, 0, 0), -1)
+            elif self._idx_ball_w > 1200:
+                cv2.circle(self._previous_field, (self._idx_ball_w,
+                                                  self._idx_ball_h), i, (0, 0, 255), -1)
+
 
 ''' 
-##
+'''
 game = AirHockey()
 while True:
     game.input()
@@ -265,4 +283,5 @@ while True:
 
 game.result_show()
 cv2.waitKey(0)
- '''
+'''
+    '''
