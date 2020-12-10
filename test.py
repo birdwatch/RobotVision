@@ -62,19 +62,13 @@ class AirHockey():
             self._idx_right_w += 10
             self._right_velocity_w = 5
 
-    def set_left(self, x, y):
-        self._left_velocity_w = self._idx_left_w - 2*x
-        self._left_velocity_h = self._idx_left_h - y
-        self._left_velocity_w = self._left_velocity_w // 2
-        self._left_velocity_h = self._left_velocity_h // 2
-        self._idx_left_w = 2*x
-        self._idx_left_h = y
+    def set_left_velocity(self, x, y):
+        self._left_velocity_h = x
+        self._left_velocity_w = y
 
-    def set_right(self, x, y):
-        self._right_velocity_w = self._idx_right_w - x
-        self._right_velocity_h = self._idx_right_h - y
-        self._idx_right_w = x+900
-        self._idx_right_h = y
+    def set_right_velocity(self, x, y):
+        self._right_velocity_w = x
+        self._right_velocity_h = y
 
     # 各プレーヤーの位置調整
     def element_revise(self):
@@ -140,6 +134,7 @@ class AirHockey():
             self._ball_color = 2
             # ボールが上
             if self._ball_velocity_h >= 0 and self._idx_ball_h < self._idx_right_h and abs(self._idx_right_w - self._idx_ball_w) < self._right_w + 5:
+                print(self._ball_velocity_h)
                 self._idx_ball_h = self._idx_right_h - self._right_h - self._ball_h - 1
                 self._ball_velocity_w = self._ball_velocity_w + self._right_velocity_w
                 self._ball_velocity_h = -self._ball_velocity_h + self._right_velocity_h
