@@ -62,15 +62,15 @@ class AirHockey():
             self._right_velocity_w = 100
 
     def set_left_velocity(self, x, y):
-        self._left_velocity_w = int(x * 2.4)
-        self._left_velocity_h = int(y * 2.4)
+        self._left_velocity_w = int(x * 2.3)
+        self._left_velocity_h = int(y * 2.3)
         self._idx_left_h = self._idx_left_h + self._left_velocity_h
         self._idx_left_w = self._idx_left_w + self._left_velocity_w
         self.element_revise()
 
     def set_right_velocity(self, x, y):
-        self._right_velocity_w = int(x * 2.4)
-        self._right_velocity_h = int(y * 2.4)
+        self._right_velocity_w = int(x * 2.3)
+        self._right_velocity_h = int(y * 2.3)
         self._idx_right_w = self._idx_right_w + self._right_velocity_w
         self._idx_right_h = self._idx_right_h + self._right_velocity_h
         self.element_revise()
