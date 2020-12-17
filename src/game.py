@@ -94,7 +94,7 @@ class AirHockey():
         if self._idx_right_w - self._right_w < self._field_img.shape[1] // 2:
             self._idx_right_w = self._right_w + self._field_img.shape[1] // 2
         if self._idx_right_w + self._right_w > self._field_img.shape[1] - 25:
-            self._idx_right_w = self._field_img.shape[1] - self._right_w + 30
+            self._idx_right_w = self._field_img.shape[1] - self._right_w - 30
 
     # 衝突判定
     def collision_detect(self):
