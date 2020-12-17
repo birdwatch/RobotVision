@@ -64,7 +64,7 @@ def cap_center(num):
         return(0, 0)
 
 
-game = test.AirHockey()
+game = game.AirHockey()
 print("aa")
 while True:
     ret, frame_L = cap_L.read()
