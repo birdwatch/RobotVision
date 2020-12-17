@@ -14,10 +14,10 @@ class AirHockey():
 
     def __init__(self):
         # 画像データの読み込み
-        self._field_img = cv2.imread("./img/field.png")
-        self._ball_img = cv2.imread("./img/ball3.png", -1)
-        self._left_img = cv2.imread("./img/left.png")
-        self._right_img = cv2.imread("./img/right.png")
+        self._field_img = cv2.imread("../img/field.png")
+        self._ball_img = cv2.imread("../img/ball3.png", -1)
+        self._left_img = cv2.imread("../img/left.png")
+        self._right_img = cv2.imread("../img/right.png")
 
         # それぞれの要素の高さ、幅の取得
         self._ball_h, self._ball_w = self._ball_img.shape[0] // 2, self._ball_img.shape[1] // 2
@@ -233,6 +233,7 @@ class AirHockey():
     # 表示
     def show(self):
         cv2.imshow("game", self._frame)
+        #  cv2.imshow("debug", self._previous_field)
 
     def result_show(self):
         print(self._previous_field.shape)

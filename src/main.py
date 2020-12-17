@@ -1,7 +1,7 @@
 import cv2
 import copy
 import numpy as np
-import test
+import game
 import time
 
 cap_L = cv2.VideoCapture(0)
