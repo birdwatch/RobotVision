@@ -62,15 +62,15 @@ class AirHockey():
             self._right_velocity_w = 100
 
     def set_left_velocity(self, x, y):
-        self._left_velocity_w = int(x * 2.3)
-        self._left_velocity_h = int(y * 2.3)
+        self._left_velocity_w = int(x * 2.4)
+        self._left_velocity_h = int(y * 2.4)
         self._idx_left_h = self._idx_left_h + self._left_velocity_h
         self._idx_left_w = self._idx_left_w + self._left_velocity_w
         self.element_revise()
 
     def set_right_velocity(self, x, y):
-        self._right_velocity_w = int(x * 2.3)
-        self._right_velocity_h = int(y * 2.3)
+        self._right_velocity_w = int(x * 2.4)
+        self._right_velocity_h = int(y * 2.4)
         self._idx_right_w = self._idx_right_w + self._right_velocity_w
         self._idx_right_h = self._idx_right_h + self._right_velocity_h
         self.element_revise()
@@ -82,8 +82,8 @@ class AirHockey():
             self._idx_left_h = self._left_h+7
         if self._idx_left_h + self._left_h > self._field_img.shape[0]:
             self._idx_left_h = self._field_img.shape[0] - self._left_h - 2
-        if self._idx_left_w - self._left_w < 5:
-            self._idx_left_w = self._left_w + 15
+        if self._idx_left_w - self._left_w < 25:
+            self._idx_left_w = self._left_w + 30
         if self._idx_left_w + self._left_w > self._field_img.shape[1] // 2:
             self._idx_left_w = self._field_img.shape[1] // 2 - self._left_w
         # 右側のプレーヤー
@@ -93,8 +93,8 @@ class AirHockey():
             self._idx_right_h = self._field_img.shape[0] - self._right_h
         if self._idx_right_w - self._right_w < self._field_img.shape[1] // 2:
             self._idx_right_w = self._right_w + self._field_img.shape[1] // 2
-        if self._idx_right_w + self._right_w > self._field_img.shape[1] - 5:
-            self._idx_right_w = self._field_img.shape[1] - self._right_w + 15
+        if self._idx_right_w + self._right_w > self._field_img.shape[1] - 25:
+            self._idx_right_w = self._field_img.shape[1] - self._right_w + 30
 
     # 衝突判定
     def collision_detect(self):
