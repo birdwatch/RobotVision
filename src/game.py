@@ -263,10 +263,10 @@ class AirHockey():
     def draw_winner_circle(self):
         if self._idx_ball_w < 100:
             cv2.circle(self._previous_field, (self._idx_ball_w,
-                                              self._idx_ball_h), 70, (0, 0, 255), -1)
+                                              self._idx_ball_h), 200, (0, 0, 255), -1)
         elif self._idx_ball_w > 1200:
             cv2.circle(self._previous_field, (self._idx_ball_w,
-                                              self._idx_ball_h), 70, (255, 0, 0), -1)
+                                              self._idx_ball_h), 200, (255, 0, 0), -1)
 
 
 '''
