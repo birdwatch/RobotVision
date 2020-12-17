@@ -269,7 +269,6 @@ class AirHockey():
                                               self._idx_ball_h), 70, (255, 0, 0), -1)
 
 
-''' 
 '''
 game = AirHockey()
 while True:
@@ -284,4 +283,3 @@ while True:
 game.result_show()
 cv2.waitKey(0)
 '''
-    '''
